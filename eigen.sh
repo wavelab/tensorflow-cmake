@@ -49,7 +49,7 @@ find_eigen () {
     ANY="[^\)]*"
     ANY_NO_QUOTES="[^\)\\\"]*"
     ANY_HEX="[a-fA-F0-9]*"
-    ARCHIVE_HEADER="native.new_http_archive\(\s*"
+    ARCHIVE_HEADER="tf_http_archive\(\s*"
     NAME_START="name\s*=\s*\\\""
     QUOTE_START="\s*=\s*\\\""
     QUOTE_END="\\\"\s*,\s*"
@@ -187,7 +187,7 @@ echo
 # perform requested action
 if [ "${MODE}" == "install" ]; then
     # donwload eigen and extract to download directory
-    echo "Downlaoding Eigen to ${DOWNLOAD_DIR}"
+    echo "Downloading Eigen to ${DOWNLOAD_DIR}"
     cd ${DOWNLOAD_DIR} || fail
     rm -rf eigen-eigen-${EIGEN_ARCHIVE_HASH} || fail
     rm -f ${EIGEN_ARCHIVE_HASH}.tar.gz* || fail

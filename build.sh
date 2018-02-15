@@ -97,6 +97,9 @@ cc_binary(
         "//tensorflow/cc:cc_ops",
         "//tensorflow/core:framework_internal",
         "//tensorflow/core:tensorflow",
+	"//tensorflow/c:c_api",
+        "//tensorflow/cc:client_session",
+        "//tensorflow/cc:scope"
     ],
 )
 EOF
@@ -105,7 +108,7 @@ EOF
 
 #expect configure_script.exp
 #./configure < configure_answers.txt
-bazel build tensorflow:libtensorflow_all.so || fail
+bazel build --config=opt tensorflow:libtensorflow_all.so || fail
 
 # copy the library to the install directory
 cp bazel-bin/tensorflow/libtensorflow_all.so ${INSTALL_DIR}/lib || fail
