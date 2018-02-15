@@ -19,30 +19,14 @@ sudo apt-get install python-numpy swig python-dev python-wheel      # TensorFlow
 git clone https://github.com/tensorflow/tensorflow                  # TensorFlow
 ```
 
-Enter the cloned repository, and append the following to the `tensorflow/BUILD file:
-```
-# Added build rule
-cc_binary(
-    name = "libtensorflow_all.so",
-    linkshared = 1,
-    linkopts = ["-Wl,--version-script=tensorflow/tf_version_script.lds"], # Remove this line if you are using MacOS
-    deps = [
-        "//tensorflow/core:framework_internal",
-        "//tensorflow/core:tensorflow",
-        "//tensorflow/cc:cc_ops",
-        "//tensorflow/cc:client_session",
-        "//tensorflow/cc:scope",
-        "//tensorflow/c:c_api",
-    ],
-)
-```
-
-This specifies a new build rule, producing `libtensorflow_all.so`, that includes all the required dependencies for integration
-with a C++ project. Build the shared library and copy it to `/usr/local/lib` as follows (this is with GPU support):
+The file `tensorflow/BUILD` contains two build rules (`libtensorflow_cc.so` and `libtensorflow_framework.so`) which can be built and used
+with a C++ project. Build these and copy it to `/usr/local/lib` as follows (this is with GPU support):
 ```bash
 ./configure      # Note that this requires user input
-bazel build --config=cuda tensorflow:libtensorflow_all.so
-sudo cp bazel-bin/tensorflow/libtensorflow_all.so /usr/local/lib
+bazel build -c opt --config=cuda tensorflow:libtensorflow_cc.so
+bazel build -c opt --config=cuda tensorflow:libtensorflow_framework.so
+sudo cp bazel-bin/tensorflow/libtensorflow_framework.so /usr/local/lib
+sudo cp bazel-bin/tensorflow/libtensorflow_cc.so /usr/local/lib
 ```
 Copy the source to `/usr/local/include/google` and remove unneeded items:
 ```bash
