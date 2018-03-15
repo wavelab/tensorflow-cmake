@@ -3,24 +3,25 @@
 include(FindPackageHandleStandardArgs)
 unset(TENSORFLOW_FOUND)
 
+if (NOT TensorFlow_INSTALL_ROOT)
+	set(TensorFlow_INSTALL_ROOT /usr/local)
+endif()
+
 find_path(TensorFlow_INCLUDE_DIR
         NAMES
         tensorflow/core
         tensorflow/cc
         third_party
         HINTS
-        /usr/local/include/google/tensorflow
-        /usr/include/google/tensorflow)
+	    ${TensorFlow_INSTALL_ROOT}/include/google/tensorflow)
 
 find_library(TensorFlow_CC tensorflow_cc
         HINTS
-        /usr/lib
-        /usr/local/lib)
+	    ${TensorFlow_INSTALL_ROOT}/lib)
 
 find_library(TensorFlow_framework tensorflow_framework
 		HINTS
-		/usr/lib
-		/usr/local/lib)
+		${TensorFlow_INSTALL_ROOT}/lib)
 
 # set TensorFlow_FOUND
 find_package_handle_standard_args(TensorFlow DEFAULT_MSG TensorFlow_INCLUDE_DIR TensorFlow_CC TensorFlow_framework)
